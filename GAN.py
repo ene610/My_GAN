@@ -19,33 +19,29 @@ class GAN(object):
         self.log_dir = log_dir
         self.epoch = epoch
         self.batch_size = batch_size
+				# parameters
+        self.input_height = 64
+        self.input_width = 64
+        self.output_height = 64
+        self.output_width = 64
 
-        if dataset_name == 'mnist' or dataset_name == 'fashion-mnist':
-            # parameters
-            self.input_height = 28
-            self.input_width = 28
-            self.output_height = 28
-            self.output_width = 28
+        self.z_dim = z_dim         # dimension of noise-vector
+        self.c_dim = 1
 
-            self.z_dim = z_dim         # dimension of noise-vector
-            self.c_dim = 1
+        # train
+        self.learning_rate = 0.0002
+        self.beta1 = 0.5
 
-            # train
-            self.learning_rate = 0.0002
-            self.beta1 = 0.5
+        # test
+        self.sample_num = 64  # number of generated images to be saved
 
-            # test
-            self.sample_num = 64  # number of generated images to be saved
+        # load mnist
+        self.data_X, self.data_y = load_mnist(self.dataset_name)
 
-            # load mnist
-            self.data_X, self.data_y = load_mnist(self.dataset_name)
-
-            # get number of batches for a single epoch
-            self.num_batches = len(self.data_X) // self.batch_size
-        else:
-            raise NotImplementedError
-
-    def discriminator(self, x, is_training=True, reuse=False):
+				# get number of batches for a single epoch
+        self.num_batches = len(self.data_X) // self.batch_size
+        
+		def discriminator(self, x, is_training=True, reuse=False):
         # Network Architecture is exactly same as in infoGAN (https://arxiv.org/abs/1606.03657)
         # Architecture : (64)4c2s-(128)4c2s_BL-FC1024_BL-FC1_S
         with tf.variable_scope("discriminator", reuse=reuse):
