@@ -42,7 +42,7 @@ class GAN(object):
 				# get number of batches for a single epoch
         self.num_batches = len(self.data_X) // self.batch_size
         
-		def discriminator(self, x, is_training=True, reuse=False):
+	def discriminator(self, x, is_training=True, reuse=False):
         # Network Architecture is exactly same as in infoGAN (https://arxiv.org/abs/1606.03657)
         # Architecture : (64)4c2s-(128)4c2s_BL-FC1024_BL-FC1_S
         with tf.variable_scope("discriminator", reuse=reuse):
