@@ -42,20 +42,20 @@ class GAN(object):
 				# get number of batches for a single epoch
         self.num_batches = len(self.data_X) // self.batch_size
         
-	def discriminator(self, x, is_training=True, reuse=False):
+    def discriminator(self, x, is_training=True, reuse=False):
         # Network Architecture is exactly same as in infoGAN (https://arxiv.org/abs/1606.03657)
         # Architecture : (64)4c2s-(128)4c2s_BL-FC1024_BL-FC1_S
         with tf.variable_scope("discriminator", reuse=reuse):
-
+    
             net = lrelu(conv2d(x, 64, 4, 4, 2, 2, name='d_conv1'))
             net = lrelu(bn(conv2d(net, 128, 4, 4, 2, 2, name='d_conv2'), is_training=is_training, scope='d_bn2'))
             net = tf.reshape(net, [self.batch_size, -1])
             net = lrelu(bn(linear(net, 1024, scope='d_fc3'), is_training=is_training, scope='d_bn3'))
             out_logit = linear(net, 1, scope='d_fc4')
             out = tf.nn.sigmoid(out_logit)
-
+    
             return out, out_logit, net
-
+    
     def generator(self, z, is_training=True, reuse=False):
         # Network Architecture is exactly same as in infoGAN (https://arxiv.org/abs/1606.03657)
         # Architecture : FC1024_BR-FC7x7x128_BR-(64)4dc2s_BR-(1)4dc2s_S
