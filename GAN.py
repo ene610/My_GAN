@@ -36,7 +36,7 @@ class GAN(object):
         self.sample_num = 64  # number of generated images to be saved
 
         # load mnist
-        self.data_X = X_Train
+        self.data_X = X_Train 
 	self.data_y = Y_Train
 
 				# get number of batches for a single epoch
